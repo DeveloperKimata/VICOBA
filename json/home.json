@@ -1,0 +1,18 @@
+[
+  {
+    "title": "Katiba",
+    "img": "images/katiba.png"
+  },
+  {
+    "title": "Notification",
+    "img": "images/notification.png"
+  },
+  {
+    "title": "Payment",
+    "img": "images/payment.png"
+  },
+  {
+    "title": "loans",
+    "img": "images/loan.png"
+  }
+]

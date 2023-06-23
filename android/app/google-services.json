@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "684610668563",
+    "project_id": "vicoba-app-final-year-project",
+    "storage_bucket": "vicoba-app-final-year-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:684610668563:android:a21d4b64461236b0d3d7e6",
+        "android_client_info": {
+          "package_name": "com.example.vicoba_app_final_year_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjfpCOFpScITPqfLZBSna_vWH08dEfZrY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
