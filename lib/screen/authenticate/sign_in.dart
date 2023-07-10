@@ -1,9 +1,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vicoba_app_final_year_project/screen/authenticate/forgetPassword/emailVerification.dart';
 import 'package:vicoba_app_final_year_project/screen/authenticate/forgetPassword/phoneNumber_verification.dart';
 import 'package:vicoba_app_final_year_project/screen/authenticate/signUp.dart';
-import 'package:vicoba_app_final_year_project/services/auth.dart';
+import 'package:vicoba_app_final_year_project/screen/controller/login_controller.dart';
+import 'package:vicoba_app_final_year_project/services/auth_repository.dart';
 import 'package:vicoba_app_final_year_project/shared/loading.dart';
 
 class SignIn extends StatefulWidget {
@@ -101,8 +103,8 @@ class signIn extends StatefulWidget {
 
 class _signInState extends State<signIn> {
 
-  final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
+  final controller = Get.put(LoginController());
 
   //text field state
   TextEditingController groupID = TextEditingController();
@@ -112,7 +114,6 @@ class _signInState extends State<signIn> {
   String error = '';
   @override
   Widget build(BuildContext context) {
-   // final controller = Get.put(LoginController());
     return Form(
       key: _formKey,
         child: Container(
@@ -125,7 +126,7 @@ class _signInState extends State<signIn> {
             onChanged: (val){
               setState(() => groupID);
             },
-            controller: groupID,
+            controller: controller.groupID,
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.group),
               labelText: 'groupID',
@@ -139,7 +140,7 @@ class _signInState extends State<signIn> {
             onChanged: (val){
               setState(() => email);
             },
-            controller: email,
+            controller: controller.email,
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.mail_outline_rounded),
               labelText: 'Email',
@@ -153,7 +154,7 @@ class _signInState extends State<signIn> {
             onChanged: (val){
               setState(() => password);
             },
-            controller: password,
+            controller: controller.password,
             decoration: InputDecoration(
                 prefixIcon: Icon(Icons.fingerprint_rounded),
                 labelText: 'password',
@@ -180,20 +181,21 @@ class _signInState extends State<signIn> {
                             children: [
                               const Text("Reset your password!",
                               style: TextStyle(
-                                  fontSize: 30, fontWeight: FontWeight.bold
+                                  fontSize: 20, fontWeight: FontWeight.bold
                               ),),
                               const Text("Choose one of below to reset your password",
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   fontWeight: FontWeight.w500,
                                 ),),
                               const SizedBox(height: 30),
                               GestureDetector(
                                 onTap: (){
-
+                                  Navigator.pop(context);
+                                  Get.to(() => emailVerification());
                                 },
                                 child: Container(
-                                  padding: const EdgeInsets.all(20),
+                                  padding: const EdgeInsets.only(top:40, bottom: 40, right: 20,left: 20),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     color: Colors.grey.shade200
@@ -219,14 +221,14 @@ class _signInState extends State<signIn> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 20),
+                              SizedBox(height: 40),
                               GestureDetector(
                                 onTap: (){
                                   Navigator.pop(context);
                                   Get.to(() => phoneNumberVerification());
                                 },
                                 child: Container(
-                                  padding: const EdgeInsets.all(20),
+                                  padding: const EdgeInsets.only(top:40, bottom: 40, right: 20,left: 20),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
                                       color: Colors.grey.shade200
@@ -263,16 +265,20 @@ class _signInState extends State<signIn> {
             child: ElevatedButton(
                 onPressed: () async{
                   if(_formKey.currentState!.validate()) {
-                    dynamic result = await _auth.signInWithEmailAndPassword(email.text, password.text);
-                    if(result == error){
-                      setState(() => error = 'please supply a valid email');
-                    }else{
-                      print(result.toString());
-                      email.clear();
-                      password.clear();
-                      groupID.clear();
-
-                    }
+                    // dynamic result = await _auth.signInWithEmailAndPassword(email.text, password.text);
+                    // if(result == error){
+                    //   setState(() => error = 'please supply a valid email');
+                    // }else{
+                    //   print(result.toString());
+                    //   email.clear();
+                    //   password.clear();
+                    //   groupID.clear();
+                    //
+                    // }
+                    AuthRepository.instance.loginWithEmailAndPassword(controller.email.text.trim(), controller.password.text.trim());
+                    controller.email.clear();
+                    controller.password.clear();
+                    controller.groupID.clear();
                   }
                 },
                 child: Text('Login'.toUpperCase()),

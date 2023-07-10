@@ -35,7 +35,6 @@ class usersDetails extends StatelessWidget {
                 builder: (context, snapshot){
                   if(snapshot.connectionState == ConnectionState.done){
                     if(snapshot.hasData){
-                      //userModel userData = snapshot.data as userModel;
                       return ListView.builder(
                         shrinkWrap: true,
                         itemCount: snapshot.data!.length,
@@ -43,8 +42,8 @@ class usersDetails extends StatelessWidget {
                           return Column(
                             children: [
                               ListTile(
-                                iconColor: Colors.blue,
-                                tileColor: Colors.blue.withOpacity(0.1),
+                                iconColor: Colors.orange,
+                                tileColor: Colors.orange.withOpacity(0.1),
                                 leading: Icon(Icons.person),
                                 title: Text('${snapshot.data![index].userName}'),
                                 subtitle: Column(

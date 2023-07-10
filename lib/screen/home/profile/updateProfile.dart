@@ -93,7 +93,7 @@ class updateProfile extends StatelessWidget {
                                 decoration: InputDecoration(
                                     prefixIcon: Icon(Icons.fingerprint_rounded),
                                     labelText: 'password',
-                                    //hintText: 'password',
+                                    hintText: 'password',
                                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(100)),
                                     suffixIcon: IconButton(
                                         onPressed: null,

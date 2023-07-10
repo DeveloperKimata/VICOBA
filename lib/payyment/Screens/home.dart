@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:vicoba_app_final_year_project/Payyment/data/model/add_date.dart';
-import 'package:vicoba_app_final_year_project/Payyment/data/utlity.dart';
+import 'package:vicoba_app_final_year_project/models/userModel.dart';
+import 'package:vicoba_app_final_year_project/payyment/data/model/add_date.dart';
+import 'package:vicoba_app_final_year_project/payyment/data/utlity.dart';
+import 'package:vicoba_app_final_year_project/screen/controller/profileController.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -109,13 +112,14 @@ class _HomeState extends State<Home> {
         style: TextStyle(
           fontWeight: FontWeight.w600,
           fontSize: 19,
-          color: history.IN == 'Social Funds' ? Colors.green : Colors.red,
+          color: history.IN == 'Income' ? Colors.green : Colors.red,
         ),
       ),
     );
   }
 
   Widget _head() {
+    final controller = Get.put(profileController());
     return Stack(
       children: [
         Column(
@@ -145,41 +149,51 @@ class _HomeState extends State<Home> {
                       child: Container(
                         height: 80,
                         width: 80,
-                       child: Image(image: AssetImage('images/group1.png'),),
-                        //color: Color.fromRGBO(250, 250, 250, 0.1),
-                        // child: Icon(
-                        //   Icons.notification_add_outlined,
-                        //   size: 30,
-                        //   color: Colors.white,
-                        // ),
+                        child:Image(image: AssetImage('images/group1.png'),),
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 35, left: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Karibu',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16,
-                            color: Color.fromARGB(255, 224, 223, 223),
-                          ),
+                        FutureBuilder(
+                          future: controller.getUserData(),
+                          builder: (context, snapshot){
+                            if(snapshot.connectionState == ConnectionState.done){
+                              if(snapshot.hasData){
+                                userModel user = snapshot.data as userModel;
+
+
+                                // controller
+                                final userName =  TextEditingController(text: user.userName);
+
+
+                                return Padding(
+                                  padding: const EdgeInsets.only(top: 35, left: 10),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    /// step 4 - wrap this widget with futureBuilder
+                                    children: [
+                                      Text(
+                                        'Welcome',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text(user.userName!,style: TextStyle(fontSize: 20,
+                                          fontWeight: FontWeight.bold,color: Colors.white),),
+                                    ],
+                                  ),
+                                );
+                              }else if(snapshot.hasError){
+                                return Center(child: Text(snapshot.error.toString()),);
+                              }else{
+                                return Center(child: Text('Something went wrong'),);
+                              }
+                            }else{
+                              return const Center(child: CircularProgressIndicator());
+                            }
+                          },
                         ),
-                        SizedBox(height: 5),
-                        Text(
-                          'Developer Kimata',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
                 ],
               ),
             ),
@@ -194,18 +208,18 @@ class _HomeState extends State<Home> {
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                  color: Color.fromRGBO(47, 125, 121, 0.3),
+                  color: Colors.black12,
                   offset: Offset(0, 6),
                   blurRadius: 12,
                   spreadRadius: 6,
                 ),
               ],
-    gradient: LinearGradient(
-    colors:[
-    Colors.orange,
-    Colors.black,
-    ],
-    ),
+              gradient: LinearGradient(
+                colors:[
+                  Colors.orange,
+                  Colors.black,
+                ],
+              ),
               borderRadius: BorderRadius.circular(15),
             ),
             child: Column(
@@ -217,7 +231,7 @@ class _HomeState extends State<Home> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Jumla ya Pesa',
+                        'Total Balance',
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
@@ -266,7 +280,7 @@ class _HomeState extends State<Home> {
                           ),
                           SizedBox(width: 7),
                           Text(
-                            'Weka',
+                            'Income',
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 16,
@@ -288,7 +302,7 @@ class _HomeState extends State<Home> {
                           ),
                           SizedBox(width: 7),
                           Text(
-                            'Toa',
+                            'Expenses',
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 16,

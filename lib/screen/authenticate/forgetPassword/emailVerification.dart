@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vicoba_app_final_year_project/screen/authenticate/forgetPassword/opt_screen.dart';
 import 'package:vicoba_app_final_year_project/screen/controller/signUp_controller.dart';
+import 'package:vicoba_app_final_year_project/services/auth_repository.dart';
 
 class emailVerification extends StatefulWidget {
   const emailVerification({Key? key}) : super(key: key);
@@ -76,6 +78,8 @@ class _emailVerificationState extends State<emailVerification> {
                       child: ElevatedButton(
                         onPressed: () {
                           if(_formKey.currentState!.validate()) {
+                            AuthRepository.instance.phoneAuthentication(email);
+                            Get.to(() => OTPScreen());
                           }
                         },
                         child: Text('NEXT'.toUpperCase()),

@@ -5,11 +5,11 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
-import 'package:vicoba_app_final_year_project/Payyment/data/model/add_date.dart';
+import 'package:vicoba_app_final_year_project/payyment/data/model/add_date.dart';
 import 'package:vicoba_app_final_year_project/screen/wrapper.dart';
+import 'package:vicoba_app_final_year_project/services/auth.dart';
 import 'package:vicoba_app_final_year_project/services/auth_repository.dart';
 
-import 'services/auth.dart';
 
 Future<void>initializeFirebase() async{
   if(Firebase.apps.isEmpty){
@@ -26,8 +26,8 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp().then((value) => Get.put(AuthRepository()));
   runApp(const MyApp());
-  // initializeFirebase().then((_) {
-  // });
+  initializeFirebase().then((_) {
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -45,5 +45,6 @@ class MyApp extends StatelessWidget {
         home: wrapper(),
       ),
     );
+
   }
 }

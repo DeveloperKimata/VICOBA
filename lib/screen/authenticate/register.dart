@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vicoba_app_final_year_project/screen/authenticate/loginPage.dart';
-import 'package:vicoba_app_final_year_project/screen/authenticate/signUp.dart';
-import 'package:vicoba_app_final_year_project/services/auth.dart';
-import 'package:vicoba_app_final_year_project/shared/constants.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -13,7 +10,6 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
 
   String group_id = '';

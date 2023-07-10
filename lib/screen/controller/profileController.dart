@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:get/get.dart';
 import 'package:vicoba_app_final_year_project/models/userModel.dart';
-import 'package:vicoba_app_final_year_project/screen/home/profile/updateProfile.dart';
 import 'package:vicoba_app_final_year_project/services/auth_repository.dart';
 import 'package:vicoba_app_final_year_project/services/userRepository.dart';
 
@@ -24,9 +23,7 @@ class profileController extends GetxController{
   }
 
   ///fetch list of user records
-  Future <List<userModel>> getAllUser() async {
-    return await _userRepo.allUser();
-  }
+  Future <List<userModel>> getAllUser() async => await _userRepo.allUser();
 
   updateRecord(userModel user) async{
     await _userRepo.updateUserRecord(user);

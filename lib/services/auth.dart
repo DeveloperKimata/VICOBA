@@ -1,9 +1,4 @@
  import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get/get.dart';
-import 'package:vicoba_app_final_year_project/models/userModel.dart';
-import 'package:vicoba_app_final_year_project/screen/controller/signUp_controller.dart';
-import 'package:vicoba_app_final_year_project/services/database.dart';
-import 'package:vicoba_app_final_year_project/services/userRepository.dart';
 
 class AuthService{
 

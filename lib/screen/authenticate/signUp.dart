@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vicoba_app_final_year_project/models/userModel.dart';
-import 'package:vicoba_app_final_year_project/screen/authenticate/forgetPassword/opt_screen.dart';
-import 'package:vicoba_app_final_year_project/screen/authenticate/loginPage.dart';
 import 'package:vicoba_app_final_year_project/screen/authenticate/sign_in.dart';
 import 'package:vicoba_app_final_year_project/screen/controller/signUp_controller.dart';
-import 'package:vicoba_app_final_year_project/services/auth.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -18,6 +15,7 @@ class _SignUpState extends State<SignUp> {
 
 //  final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
+  final controller = Get.put(signUpController());
 
   //text field state
   String groupID = '';
@@ -33,8 +31,6 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
 
     final size = MediaQuery.of(context).size;
-
-    final controller = Get.put(signUpController());
 
     return SafeArea(
       child: Scaffold(
@@ -181,20 +177,6 @@ class _SignUpState extends State<SignUp> {
                       child: ElevatedButton(
                         onPressed: () async{
                           if(_formKey.currentState!.validate()){
-                            // dynamic result = await _auth.registerWithEmailAndPassword(email.text, password.text);
-                            // if(result == error){
-                            //   setState(() => error = 'please supply a valid email');
-                            // }else{
-                            //   print(result.toString());
-                            // email.clear();
-                            // password.clear();
-                            // userName.clear();
-                            // userType.clear();
-                            // userID.clear();
-                            // phoneNumber.clear();
-                            // groupID.clear();
-                            // //Navigator.pop(context);
-                            // }
                             final user = userModel(
                               userID: controller.userID.text.trim(),
                               groupID: controller.groupID.text.trim(),
@@ -212,7 +194,6 @@ class _SignUpState extends State<SignUp> {
                             controller.userID.clear();
                             controller.phoneNumber.clear();
                             controller.groupID.clear();
-                            // Get.to(() => OTPScreen());
                          }
                         },
                         child: Text('SIGN_UP'.toUpperCase()),
@@ -225,7 +206,7 @@ class _SignUpState extends State<SignUp> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 2),
                     Text(error,
                       style: const TextStyle(
                           color: Colors.red, fontSize: 15

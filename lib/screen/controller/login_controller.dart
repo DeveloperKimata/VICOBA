@@ -16,4 +16,9 @@ class LoginController extends GetxController{
       Get.showSnackbar(GetSnackBar(message: error.toString()));
     }
   }
+
+  void phoneAuthentication(String phoneNumber){
+    AuthRepository.instance.phoneAuthentication(phoneNumber);
+  }
+
 }

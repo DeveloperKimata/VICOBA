@@ -34,7 +34,7 @@ class userModel{
       'userType':userType,
       'userName': userName,
       'password': password,
-      'phone': phoneNumber,
+      'phoneNumber': phoneNumber,
       'email':email,
     };
   }
@@ -44,7 +44,7 @@ class userModel{
    factory userModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document){
     final data = document.data()!;
     return userModel(
-        userID: data['userID'],
+        userID: document.id,
         groupID: data['groupID'],
         userType: data['userType'],
         userName: data['userName'],

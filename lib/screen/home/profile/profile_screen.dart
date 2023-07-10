@@ -3,13 +3,15 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vicoba_app_final_year_project/models/userModel.dart';
+import 'package:vicoba_app_final_year_project/screen/controller/profileController.dart';
 import 'package:vicoba_app_final_year_project/screen/home/profile/updateProfile.dart';
 import 'package:vicoba_app_final_year_project/screen/home/profile/usersDetails.dart';
-import 'package:vicoba_app_final_year_project/services/auth.dart';
-import 'package:vicoba_app_final_year_project/services/auth_repository.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:core';
+
+import 'package:vicoba_app_final_year_project/services/auth_repository.dart';
 
 
 class profileScreen extends StatefulWidget {
@@ -20,96 +22,148 @@ class profileScreen extends StatefulWidget {
 }
 
 class _profileScreenState extends State<profileScreen> {
-  final AuthService _auth = AuthService();
-  CollectionReference _reference = FirebaseFirestore.instance.collection('Photos');
+  CollectionReference _referencePhotos = FirebaseFirestore.instance.collection('Photos');
   String imageURL = '';
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(profileController());
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.grey[400],
+        backgroundColor: Colors.orangeAccent[90],
         body: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.only(top: 50, left: 30, right: 30),
+            padding: EdgeInsets.only(top: 30, left: 30, right: 30),
             child: Column(
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    IconButton(
-                      onPressed: (){
-                        Get.back();
-                      },
-                      icon: const Icon(Icons.arrow_back_ios, color: Colors.grey,),
+                    Positioned(
+                      top: 35,
+                      right: 320,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(7),
+                        child: Container(
+                          height: 80,
+                          width: 80,
+                          child: Image(image: AssetImage('images/group1.png'),),
+                        ),
+                      ),
                     ),
                     Center(child: const Text('Profile',
                       style: TextStyle(
                         fontSize: 30,
-                        color: Colors.grey,
+                        color: Colors.black,
                         fontWeight: FontWeight.bold,),),)
                   ],
 
                 ),
-                SizedBox(height: 80),
-                Stack(
-                  children: [
-                    SizedBox(
-                      width: 120,
-                      height: 120,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child:
-                        //item.containsKey('image') ?Image.network('${imageURL}') : Container(),
-                        Image(image: AssetImage("images/3.jpg"),),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        width: 35,
-                        height: 35,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: Colors.yellow[700],
-                        ),
-                        child: IconButton(onPressed: () async{
-                          ImagePicker imagePicker = ImagePicker();
-                          XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
-                          print('${file?.path}');
+                SizedBox(height: 50),
+                FutureBuilder(
+                  future: controller.getUserData(),
+                  builder: (context, snapshot){
+                    if(snapshot.connectionState == ConnectionState.done){
+                      if(snapshot.hasData){
+                        userModel user = snapshot.data as userModel;
 
-                          if(file == null) return;
-                          String uniqueFileName = DateTime.now().microsecondsSinceEpoch.toString();
 
-                          //Get a reference for the image to be stored
-                          Reference referenceRoot = FirebaseStorage.instance.ref();
-                          Reference referenceDirImages = referenceRoot.child('photos');
+                        // controller
+                        final userName =  TextEditingController(text: user.userName);
+                        final email =  TextEditingController(text: user.email);
 
-                          //Create a reference for the image to be stored
-                          Reference referenceImageToUpload = referenceDirImages.child(uniqueFileName);
 
-                          //Handle errors/success
-                          try{
-                            //store the file
-                            await referenceImageToUpload.putFile(File(file!.path));
-                            //Success: get the download URL
-                            imageURL = await referenceImageToUpload.getDownloadURL();
-                          }catch(e){
+                        return Column(
+                          /// step 4 - wrap this widget with futureBuilder
+                          children: [
+                            Stack(
+                                children: [
+                                  SizedBox(
+                                    width: 120,
+                                    height: 120,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(100),
+                                      child: Image(image: AssetImage('images/1.jpg'),),
+                                    ),
+                                  ),
+                                  // FutureBuilder(
+                                  //     future: _referencePhotos.doc(imageURL).getDownloadURL(),
+                                  //     builder: (BuildContext context,
+                                  //         AsyncSnapshot<String> snapshot){
+                                  //       if(snapshot.connectionState == ConnectionState.done && snapshot.hasData){
+                                  //         return Container(
+                                  //           width: 120,
+                                  //           height: 120,
+                                  //           child: Image.network(
+                                  //             snapshot.data!,
+                                  //             fit: BoxFit.cover,
+                                  //           ),
+                                  //         );
+                                  //       }
+                                  //       if(snapshot.connectionState == ConnectionState.waiting || !snapshot.hasData){
+                                  //         return CircularProgressIndicator();
+                                  //       }
+                                  //       return Container();
+                                  //     }),
+                                  Positioned(
+                                    bottom: 0,
+                                    right: 0,
+                                    child: Container(
+                                      width: 35,
+                                      height: 35,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(100),
+                                        color: Colors.yellow[700],
+                                      ),
+                                      child: IconButton(
+                                          onPressed: () async{
+                                            ImagePicker imagePicker = ImagePicker();
+                                            XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
+                                            print('${file?.path}');
 
-                          }
-                          //Store the file
-                          referenceImageToUpload.putFile(File(file!.path));
-                        },
-                            icon: Icon(Icons.camera_alt_outlined, color: Colors.black,size: 20,)),
-                      ),
-                    ),
-                  ],
+                                            if(file == null) return;
+                                            String uniqueFileName = DateTime.now().microsecondsSinceEpoch.toString();
+
+                                            //Get a reference for the image to be stored
+                                            Reference referenceRoot = FirebaseStorage.instance.ref();
+                                            Reference referenceDirImages = referenceRoot.child('photos');
+
+                                            //Create a reference for the image to be stored
+                                            Reference referenceImageToUpload = referenceDirImages.child(uniqueFileName);
+
+                                            //Handle errors/success
+                                            try{
+                                              //store the file
+                                              await referenceImageToUpload.putFile(File(file!.path));
+                                              //Success: get the download URL
+                                              imageURL = await referenceImageToUpload.getDownloadURL();
+                                            }catch(e){
+
+                                            }
+                                            //Store the file
+                                            referenceImageToUpload.putFile(File(file!.path));
+                                          },
+                                          icon: Icon(Icons.camera_alt_outlined, color: Colors.black,size: 20,)),
+                                    ),
+                                  ),
+                                ]
+                            ),
+                            SizedBox(height: 10),
+                    Text(user.userName!,style: TextStyle(fontSize: 20,
+                        fontWeight: FontWeight.bold,color: Colors.black),),
+                    Text(user.email!,style: TextStyle(fontSize: 15,color: Colors.black),),
+                          ],
+                        );
+                      }else if(snapshot.hasError){
+                        return Center(child: Text(snapshot.error.toString()),);
+                      }else{
+                        return Center(child: Text('Something went wrong'),);
+                      }
+                    }else{
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                  },
                 ),
-                SizedBox(height: 10),
-                Text('userName',style: TextStyle(fontSize: 20,
-                    fontWeight: FontWeight.bold,color: Colors.grey),),
-                Text('userEmail',style: TextStyle(fontSize: 15,color: Colors.grey),),
                 SizedBox(height:20),
                 SizedBox(
                   width: 200,
@@ -136,9 +190,9 @@ class _profileScreenState extends State<profileScreen> {
                 SizedBox(height: 10),
                 ProfileMenuWidget(title: "Logout", icon: Icons.logout,
                   textColor: Colors.red, endIcon: false,
-                  onPress: () async{await _auth.signOut(); },),
-              ],
-            ),
+                  onPress: (){ AuthRepository.instance.logout();},),
+            ]
+          )
           ),
         )
       ),

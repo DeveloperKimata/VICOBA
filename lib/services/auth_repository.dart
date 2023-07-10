@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:vicoba_app_final_year_project/Payyment/widgets/bottomnavigationbar.dart';
+import 'package:vicoba_app_final_year_project/payyment/widgets/bottomnavigationbar.dart';
 import 'package:vicoba_app_final_year_project/screen/authenticate/authenticate.dart';
 import 'package:vicoba_app_final_year_project/services/exceptions/signUp_email_pwd_failure.dart';
 
@@ -24,9 +24,9 @@ _setInitialScreen(User? user){
   user == null? Get.offAll(() => Authenticate()) : Get.offAll(() => Bottom());
 }
 
- Future<void> phoneAuthentication(String phoneNo) async{
+ Future<void> phoneAuthentication(String phoneNumber) async{
   await _auth.verifyPhoneNumber(
-    phoneNumber: phoneNo,
+    phoneNumber: phoneNumber,
       verificationCompleted: (credential) async{
       await _auth.signInWithCredential(credential);
       },
@@ -44,6 +44,7 @@ _setInitialScreen(User? user){
         this.verification.value = verificationId;
       });
 }
+
 
 //creating phoneAuthCredential object
 Future <bool> verifyOTP(String otp) async{

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vicoba_app_final_year_project/Payyment/widgets/bottomnavigationbar.dart';
 import 'package:vicoba_app_final_year_project/models/userModel.dart';
+import 'package:vicoba_app_final_year_project/payyment/Screens/home.dart';
 import 'package:vicoba_app_final_year_project/services/auth_repository.dart';
 import 'package:vicoba_app_final_year_project/services/userRepository.dart';
 
@@ -36,7 +36,8 @@ class signUpController extends GetxController{
   Future <void> createUser(userModel user) async{
    await userRepo.createUser(user);
     phoneAuthentication(user.phoneNumber!);
-   Get.to(() => Bottom());
+    registerUser(user.email!, user.password!);
+   Get.to(() => Home());
   }
 
 }

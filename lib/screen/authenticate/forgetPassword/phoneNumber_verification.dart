@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:vicoba_app_final_year_project/models/userModel.dart';
 import 'package:vicoba_app_final_year_project/screen/authenticate/forgetPassword/opt_screen.dart';
 import 'package:vicoba_app_final_year_project/screen/controller/signUp_controller.dart';
+import 'package:vicoba_app_final_year_project/services/auth_repository.dart';
 
 class phoneNumberVerification extends StatefulWidget {
   const phoneNumberVerification({Key? key}) : super(key: key);
@@ -78,7 +79,7 @@ class _phoneNumberVerificationState extends State<phoneNumberVerification> {
                       child: ElevatedButton(
                         onPressed: () {
                           if(_formKey.currentState!.validate()) {
-
+                            AuthRepository.instance.phoneAuthentication(phoneNumber);
                             Get.to(() => OTPScreen());
                           }
                         },
