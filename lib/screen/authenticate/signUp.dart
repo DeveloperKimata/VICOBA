@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vicoba_app_final_year_project/chat/helper/helperFunction.dart';
 import 'package:vicoba_app_final_year_project/models/userModel.dart';
+import 'package:vicoba_app_final_year_project/payyment/widgets/bottomnavigationbar.dart';
 import 'package:vicoba_app_final_year_project/screen/authenticate/sign_in.dart';
 import 'package:vicoba_app_final_year_project/screen/controller/signUp_controller.dart';
+import 'package:vicoba_app_final_year_project/services/chatServices/auth_services.dart';
+import 'package:vicoba_app_final_year_project/shared/constants.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -13,15 +17,15 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
 
-//  final AuthService _auth = AuthService();
+   AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
-  final controller = Get.put(signUpController());
 
+  bool _isLoading =false;
   //text field state
-  String groupID = '';
+  String groupName = '';
   String email = '';
   String password = '';
-  String userID = '';
+  String memberID = '';
   String userName = '';
   String userType = '';
   String phoneNumber ='';
@@ -32,7 +36,9 @@ class _SignUpState extends State<SignUp> {
 
     final size = MediaQuery.of(context).size;
 
-    return SafeArea(
+    final controller = Get.put(signUpController());
+
+    return _isLoading ? CircularProgressIndicator(color: Colors.orangeAccent,) : SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white70,
           body: SingleChildScrollView(
@@ -74,13 +80,13 @@ class _SignUpState extends State<SignUp> {
                     TextFormField(
                       validator: (val) => val!.isEmpty ? 'Enter userID' : null,
                       onChanged: (val){
-                        setState(() => userID = val);
+                        setState(() => memberID = val);
                       },
-                      controller: controller.userID,
+                      controller: controller.memberID,
                       decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.perm_identity_rounded),
-                        labelText: 'userID',
-                        hintText: 'userID',
+                        labelText: 'memberID',
+                        hintText: 'memberID',
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(100)),
                       ),
                     ),
@@ -88,13 +94,13 @@ class _SignUpState extends State<SignUp> {
                     TextFormField(
                       validator: (val) => val!.isEmpty ? 'Enter groupID' : null,
                       onChanged: (val){
-                        setState(() => groupID = val);
+                        setState(() => groupName = val);
                       },
-                      controller: controller.groupID,
+                      controller: controller.groupName,
                       decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.group),
-                        labelText: 'groupID',
-                        hintText: 'groupID',
+                        labelText: 'groupName',
+                        hintText: 'groupName',
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(100)),
                       ),
                     ),
@@ -177,9 +183,41 @@ class _SignUpState extends State<SignUp> {
                       child: ElevatedButton(
                         onPressed: () async{
                           if(_formKey.currentState!.validate()){
+                            setState(() {
+                              _isLoading = true;
+                            });
+                            await _auth.registerUserWithEmailandPassword(memberID,groupName,userType,userName,password,phoneNumber,email).then((value) async{
+                              if(value == true){
+                                //saving the shared preference state
+                                await helperFunctions.saveUserLoggedInStatus(true);
+                                await helperFunctions.saveUserEmailSF(email);
+                                await helperFunctions.saveUserNameSF(userName);
+
+                                nextScreenReplace(context, const Bottom());
+                              }else{
+                                showSnackbar(context, Colors.white60, value);
+                                setState(() {
+                                  _isLoading =false;
+                                });
+                              }
+                            });
+                            // dynamic result = await _auth.registerWithEmailAndPassword(email.text, password.text);
+                            // if(result == error){
+                            //   setState(() => error = 'please supply a valid email');
+                            // }else{
+                            //   print(result.toString());
+                            // email.clear();
+                            // password.clear();
+                            // userName.clear();
+                            // userType.clear();
+                            // userID.clear();
+                            // phoneNumber.clear();
+                            // groupID.clear();
+                            // //Navigator.pop(context);
+                            // }
                             final user = userModel(
-                              userID: controller.userID.text.trim(),
-                              groupID: controller.groupID.text.trim(),
+                              memberID: controller.memberID.text.trim(),
+                              groupName: controller.groupName.text.trim(),
                               userType: controller.userType.text.trim(),
                               userName: controller.userName.text.trim(),
                               password: controller.password.text.trim(),
@@ -191,9 +229,10 @@ class _SignUpState extends State<SignUp> {
                             controller.password.clear();
                             controller.userName.clear();
                             controller.userType.clear();
-                            controller.userID.clear();
+                            controller.memberID.clear();
                             controller.phoneNumber.clear();
-                            controller.groupID.clear();
+                            controller.groupName.clear();
+                            // Get.to(() => OTPScreen());
                          }
                         },
                         child: Text('SIGN_UP'.toUpperCase()),
@@ -206,7 +245,7 @@ class _SignUpState extends State<SignUp> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 2),
+                    const SizedBox(height: 5),
                     Text(error,
                       style: const TextStyle(
                           color: Colors.red, fontSize: 15

@@ -5,7 +5,6 @@ import 'package:vicoba_app_final_year_project/screen/authenticate/signUp.dart';
 import 'package:vicoba_app_final_year_project/screen/authenticate/sign_in.dart';
 import 'package:vicoba_app_final_year_project/screen/splash_screen/fadeInAnimation/animationDesign.dart';
 import 'package:vicoba_app_final_year_project/screen/splash_screen/fadeInAnimation/fia_model.dart';
-import 'package:vicoba_app_final_year_project/screen/userAcc.dart';
 
 class loginPage extends StatelessWidget {
   const loginPage({Key? key}) : super(key: key);
@@ -106,7 +105,7 @@ class _accountState extends State<account> {
                         Expanded(
                             child: ElevatedButton(
                                 onPressed: () {
-                                  Get.to(()=>const SignUp());
+                                  Get.to(()=> SignUp.new());
                                 },
                                 style: ElevatedButton.styleFrom(
                                   //shape: side: BorderSide.none,

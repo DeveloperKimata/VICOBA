@@ -1,11 +1,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vicoba_app_final_year_project/chat/helper/helperFunction.dart';
 import 'package:vicoba_app_final_year_project/screen/authenticate/forgetPassword/emailVerification.dart';
 import 'package:vicoba_app_final_year_project/screen/authenticate/forgetPassword/phoneNumber_verification.dart';
 import 'package:vicoba_app_final_year_project/screen/authenticate/signUp.dart';
 import 'package:vicoba_app_final_year_project/screen/controller/login_controller.dart';
 import 'package:vicoba_app_final_year_project/services/auth_repository.dart';
+import 'package:vicoba_app_final_year_project/services/chatServices/auth_services.dart';
 import 'package:vicoba_app_final_year_project/shared/loading.dart';
 
 class SignIn extends StatefulWidget {
@@ -106,15 +108,18 @@ class _signInState extends State<signIn> {
   final _formKey = GlobalKey<FormState>();
   final controller = Get.put(LoginController());
 
+  bool _isLoading = false;
+
   //text field state
-  TextEditingController groupID = TextEditingController();
+  TextEditingController groupName = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
 
+  AuthService _auth = AuthService();
   String error = '';
   @override
   Widget build(BuildContext context) {
-    return Form(
+    return _isLoading ? Center(child: CircularProgressIndicator(color: Colors.orangeAccent,),) : Form(
       key: _formKey,
         child: Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -124,13 +129,13 @@ class _signInState extends State<signIn> {
           TextFormField(
             validator: (val) => val!.isEmpty ? 'Enter groupID' : null,
             onChanged: (val){
-              setState(() => groupID);
+              setState(() => groupName);
             },
-            controller: controller.groupID,
+            controller: controller.groupName,
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.group),
-              labelText: 'groupID',
-              hintText: 'groupID',
+              labelText: 'groupName',
+              hintText: 'groupName',
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(100)),
             ),
           ),
@@ -265,6 +270,25 @@ class _signInState extends State<signIn> {
             child: ElevatedButton(
                 onPressed: () async{
                   if(_formKey.currentState!.validate()) {
+    if(_formKey.currentState!.validate()){
+    setState(() {
+    _isLoading = true;
+    });
+    await _auth.registerUserWithEmailandPassword(memberID,groupName,userType,userName,password,phoneNumber,email).then((value) async{
+    if(value == true){
+    //saving the shared preference state
+    await helperFunctions.saveUserLoggedInStatus(true);
+    await helperFunctions.saveUserEmailSF(email);
+    await helperFunctions.saveUserNameSF(userName);
+
+    nextScreenReplace(context, const Bottom());
+    }else{
+    showSnackbar(context, Colors.white60, value);
+    setState(() {
+    _isLoading =false;
+    });
+    }
+    });
                     // dynamic result = await _auth.signInWithEmailAndPassword(email.text, password.text);
                     // if(result == error){
                     //   setState(() => error = 'please supply a valid email');
@@ -278,7 +302,7 @@ class _signInState extends State<signIn> {
                     AuthRepository.instance.loginWithEmailAndPassword(controller.email.text.trim(), controller.password.text.trim());
                     controller.email.clear();
                     controller.password.clear();
-                    controller.groupID.clear();
+                    controller.groupName.clear();
                   }
                 },
                 child: Text('Login'.toUpperCase()),

@@ -10,7 +10,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class userModel{
   final String? userID;
-  final String? groupID;
+  final String? memberID;
+  final String? groupName;
   final String? userType;
   final String? userName;
   final String? password;
@@ -18,19 +19,20 @@ class userModel{
   final String? email;
 
   userModel({
-      this.userID,
-      this.groupID,
-      this.userType,
-      this.userName,
-      this.password,
-      this.phoneNumber,
-      this.email,
+    this.userID,
+     this.memberID,
+     this.groupName,
+     this.userType,
+    required this.userName,
+    required this.password,
+    required this.phoneNumber,
+    required this.email,
   });
   toJson(){
     return {
       //key and value
-      'userID':userID,
-      'groupID':groupID,
+      'memberID':memberID,
+      'groupID':groupName,
       'userType':userType,
       'userName': userName,
       'password': password,
@@ -45,7 +47,8 @@ class userModel{
     final data = document.data()!;
     return userModel(
         userID: document.id,
-        groupID: data['groupID'],
+      memberID: data['memberID'],
+        groupName: data['groupName'],
         userType: data['userType'],
         userName: data['userName'],
         password: data['password'],

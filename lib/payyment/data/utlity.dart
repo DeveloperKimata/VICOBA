@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:vicoba_app_final_year_project/Payyment/data/model/add_date.dart';
+import 'package:vicoba_app_final_year_project/payyment/data/model/add_date.dart';
 
 int totals = 0;
 

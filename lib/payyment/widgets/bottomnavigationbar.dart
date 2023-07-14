@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:vicoba_app_final_year_project/Payyment/Screens/add.dart';
-import 'package:vicoba_app_final_year_project/Payyment/Screens/home.dart';
-import 'package:vicoba_app_final_year_project/Payyment/Screens/statistics.dart';
+import 'package:vicoba_app_final_year_project/payyment/Screens/add.dart';
+import 'package:vicoba_app_final_year_project/payyment/Screens/home.dart';
+import 'package:vicoba_app_final_year_project/payyment/Screens/statistics.dart';
+import 'package:vicoba_app_final_year_project/screen/home/notification.dart';
 import 'package:vicoba_app_final_year_project/screen/home/profile/profile_screen.dart';
 
 class Bottom extends StatefulWidget {
@@ -13,7 +14,7 @@ class Bottom extends StatefulWidget {
 
 class _BottomState extends State<Bottom> {
   int index_color = 0;
-  List Screen = [Home(), Statistics(), Home(), profileScreen()];
+  List Screen = [Home(), Statistics(), notification(), profileScreen()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,7 +67,7 @@ class _BottomState extends State<Bottom> {
                   });
                 },
                 child: Icon(
-                  Icons.info_outline,
+                  Icons.notifications,
                   size: 30,
                   color: index_color == 2 ? Colors.orange : Colors.grey,
                 ),

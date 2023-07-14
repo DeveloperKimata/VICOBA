@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:vicoba_app_final_year_project/payyment/widgets/bottomnavigationbar.dart';
-import 'package:vicoba_app_final_year_project/screen/Bank/NavBar/pages.dart';
 import 'package:vicoba_app_final_year_project/screen/splash_screen/splash_screen.dart';
 
 class Authenticate extends StatefulWidget {
@@ -19,11 +18,6 @@ class _AuthenticateState extends State<Authenticate> {
 
   @override
   Widget build(BuildContext context) {
-    return Bottom();
-    // if(showSignIn){
-    //   return SignIn();
-    // }else{
-    //   return Register();
-    // }
+    return SplashScreen();
   }
 }

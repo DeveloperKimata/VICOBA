@@ -1,6 +1,5 @@
 
-
-import 'package:vicoba_app_final_year_project/Payyment/data/1.dart';
+import 'package:vicoba_app_final_year_project/payyment/data/1.dart';
 
 List<money> geter_top() {
   money snap_food = money();

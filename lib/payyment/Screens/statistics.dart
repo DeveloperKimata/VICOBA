@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:vicoba_app_final_year_project/Payyment/data/utlity.dart';
-import 'package:vicoba_app_final_year_project/Payyment/widgets/chart.dart';
+import 'package:vicoba_app_final_year_project/payyment/data/model/add_date.dart';
+import 'package:vicoba_app_final_year_project/payyment/data/utlity.dart';
+import 'package:vicoba_app_final_year_project/payyment/widgets/chart.dart';
 
-import '../data/model/add_date.dart';
-import '../data/top.dart';
 
 class Statistics extends StatefulWidget {
   const Statistics({Key? key}) : super(key: key);
@@ -147,7 +146,7 @@ class _StatisticsState extends State<Statistics> {
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 19,
-                  color: a[index].IN == 'weka' ? Colors.green : Colors.red,
+                  color: a[index].IN == 'Income' ? Colors.green : Colors.red,
                 ),
               ),
             );

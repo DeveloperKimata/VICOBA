@@ -5,7 +5,7 @@ import 'package:vicoba_app_final_year_project/services/auth_repository.dart';
 class LoginController extends GetxController{
   static LoginController get instance => Get.find();
 
-  final groupID = TextEditingController();
+  final groupName = TextEditingController();
   final email = TextEditingController();
   final password = TextEditingController();
 

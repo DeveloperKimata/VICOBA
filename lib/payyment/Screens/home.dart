@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:vicoba_app_final_year_project/models/userModel.dart';
+import 'package:vicoba_app_final_year_project/payyment/Screens/report.dart';
 import 'package:vicoba_app_final_year_project/payyment/data/model/add_date.dart';
 import 'package:vicoba_app_final_year_project/payyment/data/utlity.dart';
 import 'package:vicoba_app_final_year_project/screen/controller/profileController.dart';
@@ -53,7 +55,7 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                             Text(
-                              'See all',
+                              'See ll',
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 15,
@@ -153,47 +155,66 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                   ),
-                        FutureBuilder(
-                          future: controller.getUserData(),
-                          builder: (context, snapshot){
-                            if(snapshot.connectionState == ConnectionState.done){
-                              if(snapshot.hasData){
-                                userModel user = snapshot.data as userModel;
-
-
-                                // controller
-                                final userName =  TextEditingController(text: user.userName);
-
-
-                                return Padding(
-                                  padding: const EdgeInsets.only(top: 35, left: 10),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    /// step 4 - wrap this widget with futureBuilder
-                                    children: [
-                                      Text(
-                                        'Welcome',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Text(user.userName!,style: TextStyle(fontSize: 20,
-                                          fontWeight: FontWeight.bold,color: Colors.white),),
-                                    ],
-                                  ),
-                                );
-                              }else if(snapshot.hasError){
-                                return Center(child: Text(snapshot.error.toString()),);
-                              }else{
-                                return Center(child: Text('Something went wrong'),);
-                              }
-                            }else{
-                              return const Center(child: CircularProgressIndicator());
-                            }
-                          },
+                  Padding(
+                    padding: const EdgeInsets.only(top: 35, left: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      /// step 4 - wrap this widget with futureBuilder
+                      children: [
+                        Text(
+                          'Welcome',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
                         ),
+                        Text('DeveloperKimata',style: TextStyle(fontSize: 20,
+                            fontWeight: FontWeight.bold,color: Colors.white),),
+                      ],
+                    ),
+                  )
+                        // FutureBuilder(
+                        //   future: controller.getUserData(),
+                        //   builder: (context, snapshot){
+                        //     if(snapshot.connectionState == ConnectionState.done){
+                        //       if(snapshot.hasData){
+                        //         userModel user = snapshot.data as userModel;
+                        //
+                        //
+                        //         // controller
+                        //         final userName =  TextEditingController(text: user.userName);
+                        //
+                        //
+                        //         return Padding(
+                        //           padding: const EdgeInsets.only(top: 35, left: 10),
+                        //           child: Column(
+                        //             crossAxisAlignment: CrossAxisAlignment.start,
+                        //             /// step 4 - wrap this widget with futureBuilder
+                        //             children: [
+                        //               Text(
+                        //                 'Welcome',
+                        //                 style: TextStyle(
+                        //                   fontWeight: FontWeight.bold,
+                        //                   fontSize: 16,
+                        //                   color: Colors.white,
+                        //                 ),
+                        //               ),
+                        //               Text(user.userName!,style: TextStyle(fontSize: 20,
+                        //                   fontWeight: FontWeight.bold,color: Colors.white),),
+                        //             ],
+                        //           ),
+                        //         );
+                        //       }else if(snapshot.hasError){
+                        //         return Center(child: Text(snapshot.error.toString()),);
+                        //       }else{
+                        //         return Center(child: Text('Something went wrong'),);
+                        //       }
+                        //     }else{
+                        //       return const Center(child: CircularProgressIndicator());
+                        //     }
+                        //   },
+                        // ),
                 ],
               ),
             ),
@@ -238,10 +259,15 @@ class _HomeState extends State<Home> {
                           color: Colors.black,
                         ),
                       ),
-                      Icon(
-                        Icons.more_horiz,
-                        color: Colors.white,
-                      ),
+                      const Icon(Icons.more_horiz,color:Colors.white,),
+
+                      // IconButton(
+                      //   onPressed: (){
+                      //     //Get.to(() => Report.new(Map()));
+                      //   },
+                      //   icon: const Icon(Icons.more_horiz),
+                      //   color: Colors.white,
+                      // ),
                     ],
                   ),
                 ),

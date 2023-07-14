@@ -1,6 +1,9 @@
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:vicoba_app_final_year_project/Payyment/data/model/add_date.dart';
+import 'package:vicoba_app_final_year_project/payyment/Screens/news.dart';
+import 'package:vicoba_app_final_year_project/payyment/data/model/add_date.dart';
 
 class Add_Screen extends StatefulWidget {
   const Add_Screen({super.key});
@@ -10,6 +13,7 @@ class Add_Screen extends StatefulWidget {
 }
 
 class _Add_ScreenState extends State<Add_Screen> {
+
   final box = Hive.box<Add_data>('data');
   DateTime date = new DateTime.now();
   String? selctedItem;
@@ -25,12 +29,11 @@ class _Add_ScreenState extends State<Add_Screen> {
     "adhabu"
   ];
   final List<String> _itemei = [
-    'Weka',
-    "Toa",
+    'Income',
+    "Expand",
   ];
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     ex.addListener(() {
       setState(() {});
@@ -41,20 +44,18 @@ class _Add_ScreenState extends State<Add_Screen> {
   }
 
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.grey[300],
-        body: SafeArea(
-          child: Stack(
-            alignment: AlignmentDirectional.center,
-            children: [
-              background_container(context),
-              Positioned(
-                top: 120,
-                child: main_container(),
-              ),
-            ],
-          ),
+    return Scaffold(
+      backgroundColor: Colors.grey[300],
+      body: SafeArea(
+        child: Stack(
+          alignment: AlignmentDirectional.center,
+          children: [
+            background_container(context),
+            Positioned(
+              top: 120,
+              child: main_container(),
+            ),
+          ],
         ),
       ),
     );
@@ -71,30 +72,42 @@ class _Add_ScreenState extends State<Add_Screen> {
       child: Column(
         children: [
           SizedBox(height: 50),
-          JinaLaMuamala(),
+          name(),
           SizedBox(height: 30),
-          Maelezo(),
+          explain(),
           SizedBox(height: 30),
-          Kiasi(),
+          amount(),
           SizedBox(height: 30),
-          AinaYaMuamala(),
+          transactionType(),
           SizedBox(height: 30),
-          Tarehe(),
+          date_time(),
           Spacer(),
-          Kusanya(),
+          save(),
           SizedBox(height: 25),
         ],
       ),
     );
   }
 
-  GestureDetector Kusanya() {
+  GestureDetector save() {
     return GestureDetector(
       onTap: () {
-        var add = Add_data(
-            selctedItemi!, amount_c.text, date, expalin_C.text, selctedItem!);
-        box.add(add);
-        Navigator.of(context).pop();
+        if(selctedItemi == 'Expand' && selctedItem! == 'mkopo'){
+          Get.to(() => Loans());
+          var add = Add_data(
+              selctedItemi!, amount_c.text, date, expalin_C.text, selctedItem!);
+          box.add(add);
+          selctedItemi!; amount_c.clear(); date; expalin_C.clear(); selctedItem!;
+        }else if(selctedItemi == 'Expand' && selctedItem! != 'mkopo'){
+          Get.to(() => selctedItemi!);
+          //;
+        }
+        else {
+          var add = Add_data(
+              selctedItemi!, amount_c.text, date, expalin_C.text, selctedItem!);
+          box.add(add);
+          Navigator.of(context).pop();
+        }
       },
       child: Container(
         alignment: Alignment.center,
@@ -117,7 +130,7 @@ class _Add_ScreenState extends State<Add_Screen> {
     );
   }
 
-  Widget Tarehe() {
+  Widget date_time() {
     return Container(
       alignment: Alignment.bottomLeft,
       decoration: BoxDecoration(
@@ -147,7 +160,7 @@ class _Add_ScreenState extends State<Add_Screen> {
     );
   }
 
-  Padding AinaYaMuamala() {
+  Padding transactionType() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Container(
@@ -191,7 +204,7 @@ class _Add_ScreenState extends State<Add_Screen> {
           hint: Padding(
             padding: const EdgeInsets.only(top: 12),
             child: Text(
-              'How',
+              'transactionType',
               style: TextStyle(color: Colors.grey),
             ),
           ),
@@ -203,7 +216,7 @@ class _Add_ScreenState extends State<Add_Screen> {
     );
   }
 
-  Padding Kiasi() {
+  Padding amount() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: TextField(
@@ -225,7 +238,7 @@ class _Add_ScreenState extends State<Add_Screen> {
     );
   }
 
-  Padding Maelezo() {
+  Padding explain() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: TextField(
@@ -246,7 +259,7 @@ class _Add_ScreenState extends State<Add_Screen> {
     );
   }
 
-  Padding JinaLaMuamala() {
+  Padding name() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Container(
@@ -321,12 +334,12 @@ class _Add_ScreenState extends State<Add_Screen> {
           width: double.infinity,
           height: 240,
           decoration: BoxDecoration(
-        gradient: LinearGradient(
-        colors:[
-        Colors.black,
-        Colors.orange,
-        ],
-        ),
+            gradient: LinearGradient(
+              colors:[
+                Colors.black,
+                Colors.orange,
+              ],
+            ),
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(20),
               bottomRight: Radius.circular(20),

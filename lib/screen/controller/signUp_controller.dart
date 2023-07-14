@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vicoba_app_final_year_project/Payyment/widgets/bottomnavigationbar.dart';
 import 'package:vicoba_app_final_year_project/models/userModel.dart';
-import 'package:vicoba_app_final_year_project/payyment/Screens/home.dart';
 import 'package:vicoba_app_final_year_project/services/auth_repository.dart';
 import 'package:vicoba_app_final_year_project/services/userRepository.dart';
 
@@ -9,8 +9,8 @@ class signUpController extends GetxController{
   static signUpController get instance => Get.find();
 
   // TextField controllers to get data from TextFields
-  final userID = TextEditingController();
-  final groupID = TextEditingController();
+  final memberID = TextEditingController();
+  final groupName = TextEditingController();
   final userType = TextEditingController();
   final userName = TextEditingController();
   final password = TextEditingController();
@@ -36,8 +36,7 @@ class signUpController extends GetxController{
   Future <void> createUser(userModel user) async{
    await userRepo.createUser(user);
     phoneAuthentication(user.phoneNumber!);
-    registerUser(user.email!, user.password!);
-   Get.to(() => Home());
+   Get.to(() => Bottom());
   }
 
 }

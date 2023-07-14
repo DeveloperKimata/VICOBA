@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vicoba_app_final_year_project/models/userModel.dart';
@@ -12,6 +13,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:core';
 
 import 'package:vicoba_app_final_year_project/services/auth_repository.dart';
+import 'package:vicoba_app_final_year_project/services/chatServices/auth_services.dart';
 
 
 class profileScreen extends StatefulWidget {
@@ -22,12 +24,16 @@ class profileScreen extends StatefulWidget {
 }
 
 class _profileScreenState extends State<profileScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  late final Rx<User?> firebaseUser;
   CollectionReference _referencePhotos = FirebaseFirestore.instance.collection('Photos');
   String imageURL = '';
 
+  //
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(profileController());
+    AuthService _auth = AuthService();
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.orangeAccent[90],
@@ -60,110 +66,186 @@ class _profileScreenState extends State<profileScreen> {
 
                 ),
                 SizedBox(height: 50),
-                FutureBuilder(
-                  future: controller.getUserData(),
-                  builder: (context, snapshot){
-                    if(snapshot.connectionState == ConnectionState.done){
-                      if(snapshot.hasData){
-                        userModel user = snapshot.data as userModel;
+                Stack(
+                    children: [
+                      SizedBox(
+                        width: 120,
+                        height: 120,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: Image(image: AssetImage('images/1.jpg'),),
+                        ),
+                      ),
+                      // FutureBuilder(
+                      //     future: _referencePhotos.doc(imageURL).getDownloadURL(),
+                      //     builder: (BuildContext context,
+                      //         AsyncSnapshot<String> snapshot){
+                      //       if(snapshot.connectionState == ConnectionState.done && snapshot.hasData){
+                      //         return Container(
+                      //           width: 120,
+                      //           height: 120,
+                      //           child: Image.network(
+                      //             snapshot.data!,
+                      //             fit: BoxFit.cover,
+                      //           ),
+                      //         );
+                      //       }
+                      //       if(snapshot.connectionState == ConnectionState.waiting || !snapshot.hasData){
+                      //         return CircularProgressIndicator();
+                      //       }
+                      //       return Container();
+                      //     }),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Container(
+                          width: 35,
+                          height: 35,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color: Colors.yellow[700],
+                          ),
+                          child: IconButton(
+                              onPressed: () async{
+                                ImagePicker imagePicker = ImagePicker();
+                                XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
+                                print('${file?.path}');
 
+                                if(file == null) return;
+                                String uniqueFileName = DateTime.now().microsecondsSinceEpoch.toString();
 
-                        // controller
-                        final userName =  TextEditingController(text: user.userName);
-                        final email =  TextEditingController(text: user.email);
+                                //Get a reference for the image to be stored
+                                Reference referenceRoot = FirebaseStorage.instance.ref();
+                                Reference referenceDirImages = referenceRoot.child('photos');
 
+                                //Create a reference for the image to be stored
+                                Reference referenceImageToUpload = referenceDirImages.child(uniqueFileName);
 
-                        return Column(
-                          /// step 4 - wrap this widget with futureBuilder
-                          children: [
-                            Stack(
-                                children: [
-                                  SizedBox(
-                                    width: 120,
-                                    height: 120,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(100),
-                                      child: Image(image: AssetImage('images/1.jpg'),),
-                                    ),
-                                  ),
-                                  // FutureBuilder(
-                                  //     future: _referencePhotos.doc(imageURL).getDownloadURL(),
-                                  //     builder: (BuildContext context,
-                                  //         AsyncSnapshot<String> snapshot){
-                                  //       if(snapshot.connectionState == ConnectionState.done && snapshot.hasData){
-                                  //         return Container(
-                                  //           width: 120,
-                                  //           height: 120,
-                                  //           child: Image.network(
-                                  //             snapshot.data!,
-                                  //             fit: BoxFit.cover,
-                                  //           ),
-                                  //         );
-                                  //       }
-                                  //       if(snapshot.connectionState == ConnectionState.waiting || !snapshot.hasData){
-                                  //         return CircularProgressIndicator();
-                                  //       }
-                                  //       return Container();
-                                  //     }),
-                                  Positioned(
-                                    bottom: 0,
-                                    right: 0,
-                                    child: Container(
-                                      width: 35,
-                                      height: 35,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(100),
-                                        color: Colors.yellow[700],
-                                      ),
-                                      child: IconButton(
-                                          onPressed: () async{
-                                            ImagePicker imagePicker = ImagePicker();
-                                            XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
-                                            print('${file?.path}');
+                                //Handle errors/success
+                                try{
+                                  //store the file
+                                  await referenceImageToUpload.putFile(File(file!.path));
+                                  //Success: get the download URL
+                                  imageURL = await referenceImageToUpload.getDownloadURL();
+                                }catch(e){
 
-                                            if(file == null) return;
-                                            String uniqueFileName = DateTime.now().microsecondsSinceEpoch.toString();
-
-                                            //Get a reference for the image to be stored
-                                            Reference referenceRoot = FirebaseStorage.instance.ref();
-                                            Reference referenceDirImages = referenceRoot.child('photos');
-
-                                            //Create a reference for the image to be stored
-                                            Reference referenceImageToUpload = referenceDirImages.child(uniqueFileName);
-
-                                            //Handle errors/success
-                                            try{
-                                              //store the file
-                                              await referenceImageToUpload.putFile(File(file!.path));
-                                              //Success: get the download URL
-                                              imageURL = await referenceImageToUpload.getDownloadURL();
-                                            }catch(e){
-
-                                            }
-                                            //Store the file
-                                            referenceImageToUpload.putFile(File(file!.path));
-                                          },
-                                          icon: Icon(Icons.camera_alt_outlined, color: Colors.black,size: 20,)),
-                                    ),
-                                  ),
-                                ]
-                            ),
-                            SizedBox(height: 10),
-                    Text(user.userName!,style: TextStyle(fontSize: 20,
-                        fontWeight: FontWeight.bold,color: Colors.black),),
-                    Text(user.email!,style: TextStyle(fontSize: 15,color: Colors.black),),
-                          ],
-                        );
-                      }else if(snapshot.hasError){
-                        return Center(child: Text(snapshot.error.toString()),);
-                      }else{
-                        return Center(child: Text('Something went wrong'),);
-                      }
-                    }else{
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  },
+                                }
+                                //Store the file
+                                referenceImageToUpload.putFile(File(file!.path));
+                              },
+                              icon: Icon(Icons.camera_alt_outlined, color: Colors.black,size: 20,)),
+                        ),
+                      ),
+                    ]
                 ),
+                SizedBox(height: 10),
+                Text('DeveloperKimata',style: TextStyle(fontSize: 20,
+                    fontWeight: FontWeight.bold,color: Colors.black),),
+                Text('DeveloperKimata@vikoba.com',style: TextStyle(fontSize: 15,color: Colors.black),),
+                // FutureBuilder(
+                //   future: controller.getUserData(),
+                //   builder: (context, snapshot){
+                //     if(snapshot.connectionState == ConnectionState.done){
+                //       if(snapshot.hasData){
+                //         userModel user = snapshot.data as userModel;
+                //
+                //
+                //         // controller
+                //         final userName =  TextEditingController(text: user.userName);
+                //         final email =  TextEditingController(text: user.email);
+                //
+                //
+                //         return Column(
+                //           /// step 4 - wrap this widget with futureBuilder
+                //           children: [
+                //             Stack(
+                //                 children: [
+                //                   SizedBox(
+                //                     width: 120,
+                //                     height: 120,
+                //                     child: ClipRRect(
+                //                       borderRadius: BorderRadius.circular(100),
+                //                       child: Image(image: AssetImage('images/1.jpg'),),
+                //                     ),
+                //                   ),
+                //                   // FutureBuilder(
+                //                   //     future: _referencePhotos.doc(imageURL).getDownloadURL(),
+                //                   //     builder: (BuildContext context,
+                //                   //         AsyncSnapshot<String> snapshot){
+                //                   //       if(snapshot.connectionState == ConnectionState.done && snapshot.hasData){
+                //                   //         return Container(
+                //                   //           width: 120,
+                //                   //           height: 120,
+                //                   //           child: Image.network(
+                //                   //             snapshot.data!,
+                //                   //             fit: BoxFit.cover,
+                //                   //           ),
+                //                   //         );
+                //                   //       }
+                //                   //       if(snapshot.connectionState == ConnectionState.waiting || !snapshot.hasData){
+                //                   //         return CircularProgressIndicator();
+                //                   //       }
+                //                   //       return Container();
+                //                   //     }),
+                //                   Positioned(
+                //                     bottom: 0,
+                //                     right: 0,
+                //                     child: Container(
+                //                       width: 35,
+                //                       height: 35,
+                //                       decoration: BoxDecoration(
+                //                         borderRadius: BorderRadius.circular(100),
+                //                         color: Colors.yellow[700],
+                //                       ),
+                //                       child: IconButton(
+                //                           onPressed: () async{
+                //                             ImagePicker imagePicker = ImagePicker();
+                //                             XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
+                //                             print('${file?.path}');
+                //
+                //                             if(file == null) return;
+                //                             String uniqueFileName = DateTime.now().microsecondsSinceEpoch.toString();
+                //
+                //                             //Get a reference for the image to be stored
+                //                             Reference referenceRoot = FirebaseStorage.instance.ref();
+                //                             Reference referenceDirImages = referenceRoot.child('photos');
+                //
+                //                             //Create a reference for the image to be stored
+                //                             Reference referenceImageToUpload = referenceDirImages.child(uniqueFileName);
+                //
+                //                             //Handle errors/success
+                //                             try{
+                //                               //store the file
+                //                               await referenceImageToUpload.putFile(File(file!.path));
+                //                               //Success: get the download URL
+                //                               imageURL = await referenceImageToUpload.getDownloadURL();
+                //                             }catch(e){
+                //
+                //                             }
+                //                             //Store the file
+                //                             referenceImageToUpload.putFile(File(file!.path));
+                //                           },
+                //                           icon: Icon(Icons.camera_alt_outlined, color: Colors.black,size: 20,)),
+                //                     ),
+                //                   ),
+                //                 ]
+                //             ),
+                //             SizedBox(height: 10),
+                //     Text(user.userName!,style: TextStyle(fontSize: 20,
+                //         fontWeight: FontWeight.bold,color: Colors.black),),
+                //     Text(user.email!,style: TextStyle(fontSize: 15,color: Colors.black),),
+                //           ],
+                //         );
+                //       }else if(snapshot.hasError){
+                //         return Center(child: Text(snapshot.error.toString()),);
+                //       }else{
+                //         return Center(child: Text('Something went wrong'),);
+                //       }
+                //     }else{
+                //       return const Center(child: CircularProgressIndicator());
+                //     }
+                //   },
+                // ),
                 SizedBox(height:20),
                 SizedBox(
                   width: 200,
@@ -190,7 +272,7 @@ class _profileScreenState extends State<profileScreen> {
                 SizedBox(height: 10),
                 ProfileMenuWidget(title: "Logout", icon: Icons.logout,
                   textColor: Colors.red, endIcon: false,
-                  onPress: (){ AuthRepository.instance.logout();},),
+                  onPress: (){_auth.signOut();},),
             ]
           )
           ),

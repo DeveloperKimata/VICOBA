@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:vicoba_app_final_year_project/Payyment/data/model/add_date.dart';
-import 'package:vicoba_app_final_year_project/Payyment/data/utlity.dart';
+import 'package:vicoba_app_final_year_project/payyment/data/model/add_date.dart';
+import 'package:vicoba_app_final_year_project/payyment/data/utlity.dart';
 
 class Chart extends StatefulWidget {
   int indexx;
@@ -19,22 +19,22 @@ class _ChartState extends State<Chart> {
   Widget build(BuildContext context) {
     switch (widget.indexx) {
       case 0:
-        a = today().cast<Add_data>();
+        a = today();
         b = true;
         j = true;
         break;
       case 1:
-        a = week().cast<Add_data>();
+        a = week();
         b = false;
         j = true;
         break;
       case 2:
-        a = month().cast<Add_data>();
+        a = month();
         b = false;
         j = true;
         break;
       case 3:
-        a = year().cast<Add_data>();
+        a = year();
 
         j = false;
         break;

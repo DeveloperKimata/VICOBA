@@ -14,6 +14,7 @@ class wrapper extends StatelessWidget {
     final user = Provider.of<User?>(context);
 
     //return either home or authenticate widget
+
     if(user == null){
     return Authenticate();
   }else{
