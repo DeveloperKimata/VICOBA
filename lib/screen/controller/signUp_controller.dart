@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vicoba_app_final_year_project/Payyment/widgets/bottomnavigationbar.dart';
 import 'package:vicoba_app_final_year_project/models/userModel.dart';
+import 'package:vicoba_app_final_year_project/payyment/widgets/bottomnavigationbar.dart';
 import 'package:vicoba_app_final_year_project/services/auth_repository.dart';
 import 'package:vicoba_app_final_year_project/services/userRepository.dart';
 

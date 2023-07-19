@@ -20,6 +20,8 @@ class _Add_ScreenState extends State<Add_Screen> {
   String? selctedItemi;
   final TextEditingController expalin_C = TextEditingController();
   FocusNode ex = FocusNode();
+  final TextEditingController accNo = TextEditingController();
+  FocusNode accNo_ = FocusNode();
   final TextEditingController amount_c = TextEditingController();
   FocusNode amount_ = FocusNode();
   final List<String> _item = [
@@ -29,8 +31,8 @@ class _Add_ScreenState extends State<Add_Screen> {
     "adhabu"
   ];
   final List<String> _itemei = [
-    'Income',
-    "Expand",
+    'Deposit',
+    "Withdraw",
   ];
   @override
   void initState() {
@@ -74,7 +76,7 @@ class _Add_ScreenState extends State<Add_Screen> {
           SizedBox(height: 50),
           name(),
           SizedBox(height: 30),
-          explain(),
+          bankAccount(),
           SizedBox(height: 30),
           amount(),
           SizedBox(height: 30),
@@ -92,13 +94,13 @@ class _Add_ScreenState extends State<Add_Screen> {
   GestureDetector save() {
     return GestureDetector(
       onTap: () {
-        if(selctedItemi == 'Expand' && selctedItem! == 'mkopo'){
-          Get.to(() => Loans());
+        if(selctedItemi == 'Withdraw' && selctedItem! == 'mkopo'){
           var add = Add_data(
               selctedItemi!, amount_c.text, date, expalin_C.text, selctedItem!);
           box.add(add);
-          selctedItemi!; amount_c.clear(); date; expalin_C.clear(); selctedItem!;
-        }else if(selctedItemi == 'Expand' && selctedItem! != 'mkopo'){
+          Navigator.of(context).pop();
+          //selctedItemi!; amount_c.clear(); date; expalin_C.clear(); selctedItem!;
+        }else if(selctedItemi == 'Withdraw' && selctedItem! != 'mkopo'){
           Get.to(() => selctedItemi!);
           //;
         }
@@ -118,7 +120,7 @@ class _Add_ScreenState extends State<Add_Screen> {
         width: 120,
         height: 50,
         child: Text(
-          'Save',
+          'Submit',
           style: TextStyle(
             fontFamily: 'f',
             fontWeight: FontWeight.w600,
@@ -155,6 +157,28 @@ class _Add_ScreenState extends State<Add_Screen> {
             fontSize: 15,
             color: Colors.black,
           ),
+        ),
+      ),
+    );
+  }
+
+  Padding bankAccount() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: TextField(
+        keyboardType: TextInputType.number,
+        focusNode: accNo_,
+        controller: accNo,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          labelText: 'Enter bankAccount Number',
+          labelStyle: TextStyle(fontSize: 17, color: Colors.grey.shade500),
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(width: 2, color: Colors.orange)),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(width: 2, color: Colors.orange)),
         ),
       ),
     );
@@ -225,7 +249,7 @@ class _Add_ScreenState extends State<Add_Screen> {
         controller: amount_c,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-          labelText: 'amount',
+          labelText: 'Enter paymentAmount',
           labelStyle: TextStyle(fontSize: 17, color: Colors.grey.shade500),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
@@ -238,26 +262,26 @@ class _Add_ScreenState extends State<Add_Screen> {
     );
   }
 
-  Padding explain() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: TextField(
-        focusNode: ex,
-        controller: expalin_C,
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-          labelText: 'explain',
-          labelStyle: TextStyle(fontSize: 17, color: Colors.grey.shade500),
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(width: 2, color: Colors.orange)),
-          focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(width: 2, color: Colors.orange)),
-        ),
-      ),
-    );
-  }
+  // Padding explain() {
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(horizontal: 20),
+  //     child: TextField(
+  //       focusNode: ex,
+  //       controller: expalin_C,
+  //       decoration: InputDecoration(
+  //         contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+  //         labelText: 'explain',
+  //         labelStyle: TextStyle(fontSize: 17, color: Colors.grey.shade500),
+  //         enabledBorder: OutlineInputBorder(
+  //             borderRadius: BorderRadius.circular(10),
+  //             borderSide: BorderSide(width: 2, color: Colors.orange)),
+  //         focusedBorder: OutlineInputBorder(
+  //             borderRadius: BorderRadius.circular(10),
+  //             borderSide: BorderSide(width: 2, color: Colors.orange)),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Padding name() {
     return Padding(
@@ -315,7 +339,7 @@ class _Add_ScreenState extends State<Add_Screen> {
           hint: Padding(
             padding: const EdgeInsets.only(top: 12),
             child: Text(
-              'Name',
+              'Select paymentType',
               style: TextStyle(color: Colors.grey),
             ),
           ),

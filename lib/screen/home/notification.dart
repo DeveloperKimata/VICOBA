@@ -90,8 +90,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vicoba_app_final_year_project/models/loanModel.dart';
-import 'package:vicoba_app_final_year_project/models/userModel.dart';
-import 'package:vicoba_app_final_year_project/payyment/Screens/Info.dart';
 import 'package:vicoba_app_final_year_project/screen/controller/notification_controller.dart';
 
 class notification extends StatelessWidget {
@@ -120,47 +118,11 @@ class notification extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 10),
-                FutureBuilder<List<loanModel>>(
-                  future: controller.getAllLoan(),
-                  builder: (context, snapshot){
-                    if(snapshot.connectionState == ConnectionState.done){
-                      if(snapshot.hasData){
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (c,index){
-                            return Column(
-                              children: [
-                                ListTile(
-                                  onTap: (){
-                                    Get.to(() => Info());
-                                  },
-                                  iconColor: Colors.orange,
-                                  tileColor: Colors.orange.withOpacity(0.1),
-                                  leading: Icon(Icons.monetization_on_outlined),
-                                  title: Text('${snapshot.data![index].requestStatement}'),
-                                ),
-                                SizedBox(height: 10),
-                              ],
-                            );
-                          },
-                        );
-                      }
-                      else if(snapshot.hasError){
-                        return Center(child: Text(snapshot.error.toString()),);
-                      }else{
-                        return Center(child: Text('Something went wrong'),);
-                      }
-                    }else{
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  },
-                ),
-                // FutureBuilder<List<reportModel>>(
-                //   future: controller.getAllReport(),
+                // FutureBuilder<List<loanModel>>(
+                //   future: controller.getAllLoan(),
                 //   builder: (context, snapshot){
                 //     if(snapshot.connectionState == ConnectionState.done){
-                //       if(snapshot.hasData ){
+                //       if(snapshot.hasData){
                 //         return ListView.builder(
                 //           shrinkWrap: true,
                 //           itemCount: snapshot.data!.length,
@@ -169,12 +131,12 @@ class notification extends StatelessWidget {
                 //               children: [
                 //                 ListTile(
                 //                   onTap: (){
-                //                     //Get.to(() => Info());
+                //                     Get.to(() => Info());
                 //                   },
                 //                   iconColor: Colors.orange,
                 //                   tileColor: Colors.orange.withOpacity(0.1),
                 //                   leading: Icon(Icons.monetization_on_outlined),
-                //                   title: Text('${snapshot.data![index].requestStatement}'),
+                //                   title: Text('${snapshot.data![index].loanRequest}'),
                 //                 ),
                 //                 SizedBox(height: 10),
                 //               ],
@@ -192,6 +154,42 @@ class notification extends StatelessWidget {
                 //     }
                 //   },
                 // ),
+                FutureBuilder<List<loanModel>>(
+                  future: controller.getAllLoan(),
+                  builder: (context, snapshot){
+                    if(snapshot.connectionState == ConnectionState.done){
+                      if(snapshot.hasData ){
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (c,index){
+                            return Column(
+                              children: [
+                                ListTile(
+                                  onTap: (){
+                                    //Get.to(() => Info());
+                                  },
+                                  iconColor: Colors.orange,
+                                  tileColor: Colors.orange.withOpacity(0.1),
+                                  leading: Icon(Icons.monetization_on_outlined),
+                                  title: Text('${snapshot.data![index].controllerStatement}'),
+                                ),
+                                SizedBox(height: 10),
+                              ],
+                            );
+                          },
+                        );
+                      }
+                      else if(snapshot.hasError){
+                        return Center(child: Text(snapshot.error.toString()),);
+                      }else{
+                        return Center(child: Text('Something went wrong'),);
+                      }
+                    }else{
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                  },
+                ),
               ],
             ),
           ),

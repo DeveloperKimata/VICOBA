@@ -30,13 +30,13 @@ class AdddataAdapter extends TypeAdapter<Add_data> {
     writer
       ..writeByte(5)
       ..writeByte(0)
-      ..write(obj.name)
+      ..write(obj.Select_payment_type)
       ..writeByte(1)
       ..write(obj.explain)
       ..writeByte(2)
-      ..write(obj.amount)
+      ..write(obj.Amount)
       ..writeByte(3)
-      ..write(obj.IN)
+      ..write(obj.Select_transaction_type)
       ..writeByte(4)
       ..write(obj.datetime);
   }

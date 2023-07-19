@@ -12,7 +12,7 @@ class groupRepository extends GetxController{
   final userRepo = Get.put(userRepository());
   ///store group in Firestore
   createGroup(groupModel group) async{
-    await _db.collection("GROUPS").add(group.toJson()).whenComplete(
+    await _db.collection("groups").add(group.toJson()).whenComplete(
           () => Get.snackbar("Success", "Your group has been created.",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.green.withOpacity(0.1),
@@ -31,19 +31,19 @@ class groupRepository extends GetxController{
   ///step 2 - fetch all groups or group details
 
   Future<groupModel> getGroupInfo(String created_by) async{
-    final snapshot = await _db.collection('GROUPS').where("created_by", isEqualTo: created_by).get();
+    final snapshot = await _db.collection('groups').where("created_by", isEqualTo: created_by).get();
     final groupData = snapshot.docs.map((e) => groupModel.fromSnapshot(e)).single;
     return groupData;
   }
 
   Future<List<groupModel>> allGroups() async{
-    final snapshot = await _db.collection('GROUPS').get();
+    final snapshot = await _db.collection('groups').get();
     final groupData = snapshot.docs.map((e) => groupModel.fromSnapshot(e)).toList();
     return groupData;
   }
 
   Future <void> updateGroupInfo(groupModel group) async{
-    await _db.collection('GROUPS').doc(group.id).update(group.toJson());
+    await _db.collection('groups').doc(group.id).update(group.toJson());
   }
 
 }

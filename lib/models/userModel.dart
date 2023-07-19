@@ -1,10 +1,4 @@
-// class user{
-//
-//   final String uid;
-//
-//   user({required this.uid});
-//
-// }
+
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -41,7 +35,6 @@ class userModel{
     };
   }
 
-  /// step 1 - map user fetched from Firebase to userModel
 
    factory userModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document){
     final data = document.data()!;

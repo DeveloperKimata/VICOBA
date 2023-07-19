@@ -1,22 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class loanModel{
-  final String? requestStatement = 'Loan Request';
+  final String? loanRequest;
   final String? id;
-  final String? Amount;
-  final String? statement;
+  final String? controllerAmount;
+  final String? controllerStatement;
 
   loanModel({
+    required this.loanRequest,
     required this.id,
-    required this.Amount,
-    required this.statement,
+    required this.controllerAmount,
+    required this.controllerStatement,
   });
   toJson(){
     return {
       //key and value
-      'id':id,
-      'Amount':Amount,
-      'statement':statement,
+      'requestStatement':loanRequest,
+      'controllerAmount':controllerAmount,
+      'controllerstatement':controllerStatement,
     };
   }
 
@@ -25,9 +26,10 @@ class loanModel{
   factory loanModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document){
     final data = document.data()!;
     return loanModel(
-      id: data['id'],
-      Amount: data['Amount'],
-      statement: data['statement'],
+      id: document.id,
+      loanRequest:data['loanRequest'],
+      controllerAmount: data['controllerAmount'],
+      controllerStatement: data['controllerStatement'],
     );
   }
 }

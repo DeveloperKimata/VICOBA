@@ -10,8 +10,8 @@ class userRepository extends GetxController{
 
   ///store user in Firestore
   createUser(userModel user) async{
-    await _db.collection("USERS").add(user.toJson()).whenComplete(
-        () => Get.snackbar("Success", "Your account has been creaated.",
+    await _db.collection("users").add(user.toJson()).whenComplete(
+        () => Get.snackbar("Success", "Your account has been created.",
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.green.withOpacity(0.1),
         colorText: Colors.green),
@@ -29,19 +29,19 @@ class userRepository extends GetxController{
   ///step 2 - fetch all users or user details
 
   Future<userModel> getUserDetails(String email) async{
-    final snapshot = await _db.collection('USERS').where("email", isEqualTo: email).get();
+    final snapshot = await _db.collection('users').where("email", isEqualTo: email).get();
     final userData = snapshot.docs.map((e) => userModel.fromSnapshot(e)).single;
     return userData;
   }
 
   Future<List<userModel>> allUser() async{
-    final snapshot = await _db.collection('USERS').get();
+    final snapshot = await _db.collection('users').get();
     final userData = snapshot.docs.map((e) => userModel.fromSnapshot(e)).toList();
     return userData;
   }
 
   Future <void> updateUserRecord(userModel user) async{
-    await _db.collection('USERS').doc(user.userID).update(user.toJson());
+    await _db.collection('users').doc(user.userID).update(user.toJson());
   }
 
 }

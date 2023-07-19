@@ -1,28 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class transModel{
-  final String? requestStatement = 'Loan Request';
   final String? id;
   final String? Amount;
   final String? AccNo;
-  final String? Name;
-  final String? statement;
+  final String? groupName;
+  final String? selectedItem;
 
-  transModel({
-    required this.id,
-    required this.Amount,
-    required this.AccNo,
-    required this.Name,
-    required this.statement,
-  });
+
+  transModel({this.id, this.Amount, this.AccNo, this.groupName, this.selectedItem});
+
+
   toJson(){
     return {
       //key and value
       'id':id,
       'Amount':Amount,
       'AccNo':AccNo,
-      'Name':Name,
-      'statement':statement,
+      'groupName':groupName,
+      'loanStatus':selectedItem
     };
   }
 
@@ -31,11 +27,11 @@ class transModel{
   factory transModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document){
     final data = document.data()!;
     return transModel(
-      id: data['id'],
+      id:document.id,
       Amount: data['Amount'],
       AccNo: data['AccNo'],
-      Name: data['Name'],
-      statement: data['statement'],
+      groupName: data['groupName'],
+      selectedItem: data['selectedItem'],
     );
   }
 }

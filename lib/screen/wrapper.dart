@@ -19,5 +19,6 @@ class wrapper extends StatelessWidget {
     return Authenticate();
   }else{
       return Bottom();
-    }}
+    }
+  }
 }

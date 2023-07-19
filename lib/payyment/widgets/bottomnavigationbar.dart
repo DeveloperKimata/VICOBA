@@ -1,20 +1,29 @@
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:vicoba_app_final_year_project/chat/helper/helperFunction.dart';
+import 'package:vicoba_app_final_year_project/chat/pages/chatPage.dart';
 import 'package:vicoba_app_final_year_project/payyment/Screens/add.dart';
 import 'package:vicoba_app_final_year_project/payyment/Screens/home.dart';
 import 'package:vicoba_app_final_year_project/payyment/Screens/statistics.dart';
 import 'package:vicoba_app_final_year_project/screen/home/notification.dart';
-import 'package:vicoba_app_final_year_project/screen/home/profile/profile_screen.dart';
+import 'package:vicoba_app_final_year_project/services/chatServices/db_services.dart';
 
 class Bottom extends StatefulWidget {
-  const Bottom({Key? key}) : super(key: key);
+   Bottom({Key? key, }) : super(key: key);
 
   @override
   State<Bottom> createState() => _BottomState();
 }
 
 class _BottomState extends State<Bottom> {
+   String userName = '';
+   String email = "";
+   String groupName = '';
+   Stream? groups;
   int index_color = 0;
-  List Screen = [Home(), Statistics(), notification(), profileScreen()];
+
+  List Screen = [Home(), Statistics(), notification(), chatPage()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,7 +88,7 @@ class _BottomState extends State<Bottom> {
                   });
                 },
                 child: Icon(
-                  Icons.person_outlined,
+                  Icons.chat,
                   size: 30,
                   color: index_color == 3 ? Colors.orange : Colors.grey,
                 ),

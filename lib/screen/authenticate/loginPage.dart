@@ -69,15 +69,15 @@ class _accountState extends State<account> {
                           },
                               child: const Text.rich(
                                   TextSpan(
-                                      text: "Don't have a group?",
+                                      text: "Village Community Banking",
                                       style:TextStyle(color:Colors.black,
                                           fontSize: 15),
                                       children: [
-                                        TextSpan(
-                                          text: ' Register Here',
-                                          style:TextStyle(color:Colors.blue,
-                                              fontSize: 15),
-                                        )
+                                        // TextSpan(
+                                        //   text: ' Register Here',
+                                        //   style:TextStyle(color:Colors.blue,
+                                        //       fontSize: 15),
+                                        // )
                                       ]
                                   )
                               )

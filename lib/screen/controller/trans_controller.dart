@@ -8,22 +8,16 @@ class transController extends GetxController{
   static transController get instance => Get.find();
 
   // TextField controllers to get data from TextFields
-  TextEditingController _loanRequest = TextEditingController(text: 'Loan Request');
-  TextEditingController _controllerID = TextEditingController();
-  FocusNode id = FocusNode();
-  TextEditingController _controllerAccNo = TextEditingController();
-  FocusNode accNo = FocusNode();
-  TextEditingController _controllerAmount = TextEditingController();
-  FocusNode Amount = FocusNode();
-  TextEditingController _controllerName = TextEditingController();
-  TextEditingController _controllerPost = TextEditingController();
-  TextEditingController _controllerStatus = TextEditingController();
+  final Amount = TextEditingController();
+  final AccNo = TextEditingController();
+  final selectedItem = TextEditingController();
+  final groupName = TextEditingController();
 
   final transRepo = Get.put(transRepository());
 
   Future <void> createTransaction(transModel trans) async{
     await transRepo.createTransaction(trans);
-    Get.to(() => notification());
+   // Get.to(() => notification(reportType: widget.reportType, reportText: widget.reportText,));
   }
 
 }

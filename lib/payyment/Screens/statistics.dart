@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:vicoba_app_final_year_project/payyment/data/model/add_date.dart';
 import 'package:vicoba_app_final_year_project/payyment/data/utlity.dart';
 import 'package:vicoba_app_final_year_project/payyment/widgets/chart.dart';
-
 
 class Statistics extends StatefulWidget {
   const Statistics({Key? key}) : super(key: key);
@@ -126,10 +126,10 @@ class _StatisticsState extends State<Statistics> {
             return ListTile(
               leading: ClipRRect(
                 borderRadius: BorderRadius.circular(5),
-                child: Image.asset('images/${a[index].name}.png', height: 40),
+                child: Image.asset('images/${a[index].Select_payment_type}.png', height: 40),
               ),
               title: Text(
-                a[index].name,
+                a[index].Select_payment_type,
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w600,
@@ -142,11 +142,11 @@ class _StatisticsState extends State<Statistics> {
                 ),
               ),
               trailing: Text(
-                a[index].amount,
+                a[index].Amount,
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 19,
-                  color: a[index].IN == 'Income' ? Colors.green : Colors.red,
+                  color: a[index].Select_transaction_type == 'Deposit' ? Colors.green : Colors.red,
                 ),
               ),
             );

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:vicoba_app_final_year_project/Bank/LoanRequest.dart';
 import 'package:vicoba_app_final_year_project/payyment/data/model/add_date.dart';
-import 'package:vicoba_app_final_year_project/screen/Bank/LoanRequest.dart';
 
 class Bank extends StatefulWidget {
   const Bank({Key? key}) : super(key: key);
@@ -96,7 +96,7 @@ class _BankState extends State<Bank> {
         child: Image.asset('images/group1.png', height: 40),
       ),
       title: Text(
-        history.name,
+        history.Select_payment_type,
         style: TextStyle(
           fontSize: 17,
           fontWeight: FontWeight.w600,
@@ -109,11 +109,11 @@ class _BankState extends State<Bank> {
         ),
       ),
       trailing: Text(
-        history.amount,
+        history.Amount,
         style: TextStyle(
           fontWeight: FontWeight.w600,
           fontSize: 19,
-          color: history.IN == 'Income' ? Colors.green : Colors.red,
+          color: history.Select_transaction_type == 'Income' ? Colors.green : Colors.red,
         ),
       ),
     );

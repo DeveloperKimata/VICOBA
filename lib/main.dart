@@ -36,7 +36,7 @@ void main() async{
     runApp(const MyApp());
   }else{
     ///run the initialization for android, ios
-    await Firebase.initializeApp().then((value) => Get.put(AuthRepository()));
+    await Firebase.initializeApp();
 }
 
 runApp(const MyApp());
@@ -59,9 +59,7 @@ bool _isSignedIn = false;
   getUserLoggedInStatus() async{
     await helperFunctions.getUserLoggedInStatus().then((value){
       if(value != null){
-        setState(() {
-          _isSignedIn = value;
-        });
+        _isSignedIn = value;
       }
     });
   }

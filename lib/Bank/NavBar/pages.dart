@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vicoba_app_final_year_project/screen/Bank/bankerPage.dart';
-import 'package:vicoba_app_final_year_project/screen/Bank/profile.dart';
+import 'package:vicoba_app_final_year_project/Bank/bankerPage.dart';
+import 'package:vicoba_app_final_year_project/Bank/profile.dart';
 
 class bottomPage extends StatefulWidget {
   const bottomPage({Key? key}) : super(key: key);

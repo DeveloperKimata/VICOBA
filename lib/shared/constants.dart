@@ -12,11 +12,12 @@ const textInputDecoration = InputDecoration(
 );
 
 class Constants{
-  static String appId="";
-  static String apiKey = "";
-  static String messagingSenderId = "";
-  static String projectId ="";
+  static String appId="1:684610668563:web:c1c2f6e1501db449d3d7e6";
+  static String apiKey = "AIzaSyC9JV-Qx6MIBJ_1NFK46W5qohtyFk2rcqY";
+  static String messagingSenderId = "684610668563";
+  static String projectId ="vicoba-app-final-year-project";
 }
+
 
 ///go router for pages.
 void nextScreen(context, page){
@@ -29,7 +30,7 @@ void nextScreenReplace(context, page){
 
 void showSnackbar(context, color,message){
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    context: Text(
+    content: Text(
       message,
       style: const TextStyle(fontSize: 15),
     ),

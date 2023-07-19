@@ -4,34 +4,31 @@ import 'package:vicoba_app_final_year_project/payyment/data/model/add_date.dart'
 int totals = 0;
 
 final box = Hive.box<Add_data>('data');
-
 int total() {
   var history2 = box.values.toList();
   List a = [0, 0];
   for (var i = 0; i < history2.length; i++) {
-    a.add(history2[i].IN == 'Income'
-        ? int.parse(history2[i].amount)
-        : int.parse(history2[i].amount) * -1);
+    a.add(history2[i].Select_transaction_type == 'Deposit'
+        ? int.parse(history2[i].Amount)
+        : int.parse(history2[i].Amount) * -1);
   }
   totals = a.reduce((value, element) => value + element);
   return totals;
 }
-
 int income() {
   var history2 = box.values.toList();
   List a = [0, 0];
   for (var i = 0; i < history2.length; i++) {
-    a.add(history2[i].IN == 'Income' ? int.parse(history2[i].amount) : 0);
+    a.add(history2[i].Select_transaction_type == 'Deposit' ? int.parse(history2[i].Amount) : 0);
   }
   totals = a.reduce((value, element) => value + element);
   return totals;
 }
-
 int expenses() {
   var history2 = box.values.toList();
   List a = [0, 0];
   for (var i = 0; i < history2.length; i++) {
-    a.add(history2[i].IN == 'Income' ? 0 : int.parse(history2[i].amount) * -1);
+    a.add(history2[i].Select_transaction_type == 'Deposit' ? 0 : int.parse(history2[i].Amount) * -1);
   }
   totals = a.reduce((value, element) => value + element);
   return totals;
@@ -90,9 +87,9 @@ int total_chart(List<Add_data> history2) {
   List a = [0, 0];
 
   for (var i = 0; i < history2.length; i++) {
-    a.add(history2[i].IN == 'Income'
-        ? int.parse(history2[i].amount)
-        : int.parse(history2[i].amount) * -1);
+    a.add(history2[i].Select_transaction_type == 'Deposit'
+        ? int.parse(history2[i].Amount)
+        : int.parse(history2[i].Amount) * -1);
   }
   totals = a.reduce((value, element) => value + element);
   return totals;

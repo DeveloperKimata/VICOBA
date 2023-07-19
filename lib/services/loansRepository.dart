@@ -10,7 +10,7 @@ class loanRepository extends GetxController{
 
   ///store user in Firestore
   createLoan(loanModel loan) async{
-    await _db.collection("LOANS").add(loan.toJson()).whenComplete(
+    await _db.collection('loans').add(loan.toJson()).whenComplete(
           () => Get.snackbar("Congrats","Your request has sent successfully.",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.green.withOpacity(0.1),
@@ -29,13 +29,13 @@ class loanRepository extends GetxController{
   ///step 2 - fetch all users or user details
 
   Future<loanModel> getloanDetails(String email) async{
-    final snapshot = await _db.collection('LOANS').where("email", isEqualTo: email).get();
+    final snapshot = await _db.collection('loans').where("email", isEqualTo: email).get();
     final loanData = snapshot.docs.map((e) => loanModel.fromSnapshot(e)).single;
     return loanData;
   }
 
   Future<List<loanModel>> allLoans() async{
-    final snapshot = await _db.collection('LOANS').get();
+    final snapshot = await _db.collection('loans').get();
     final loanData = snapshot.docs.map((e) => loanModel.fromSnapshot(e)).toList();
     return loanData;
   }

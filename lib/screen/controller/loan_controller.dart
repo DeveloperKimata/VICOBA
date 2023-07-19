@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vicoba_app_final_year_project/Payyment/widgets/bottomnavigationbar.dart';
 import 'package:vicoba_app_final_year_project/models/loanModel.dart';
+import 'package:vicoba_app_final_year_project/payyment/widgets/bottomnavigationbar.dart';
 import 'package:vicoba_app_final_year_project/services/loansRepository.dart';
 
 class loanController extends GetxController{
@@ -10,11 +10,11 @@ class loanController extends GetxController{
   // TextField controllers to get data from TextFields
   TextEditingController _loanRequest = TextEditingController(
       text: 'Loan Request');
-  TextEditingController _controllerID = TextEditingController();
+  final controllerID = TextEditingController();
   FocusNode id = FocusNode();
-  TextEditingController _controllerAmount = TextEditingController();
+  final controllerAmount = TextEditingController();
   FocusNode Amount = FocusNode();
-  TextEditingController _controllerPost = TextEditingController();
+  final controllerStatement = TextEditingController();
 
   final loanRepo = Get.put(loanRepository());
 

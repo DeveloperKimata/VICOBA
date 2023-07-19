@@ -10,7 +10,7 @@ class transRepository extends GetxController{
 
   ///store user in Firestore
   createTransaction(transModel trans) async{
-    await _db.collection("TRANSACTIONS").add(trans.toJson()).whenComplete(
+    await _db.collection("transactions").add(trans.toJson()).whenComplete(
           () => Get.snackbar("Congrats","Your confirmations has sent successfully.",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.green.withOpacity(0.1),
@@ -29,13 +29,13 @@ class transRepository extends GetxController{
   ///step 2 - fetch all users or user details
 
   Future<transModel> getTransDetails(String email) async{
-    final snapshot = await _db.collection('TRANSACTIONS').where("email", isEqualTo: email).get();
+    final snapshot = await _db.collection('transactions').where("email", isEqualTo: email).get();
     final transData = snapshot.docs.map((e) => transModel.fromSnapshot(e)).single;
     return transData;
   }
 
   Future<List<transModel>> allTrans() async{
-    final snapshot = await _db.collection('TRANSACTIONS').get();
+    final snapshot = await _db.collection('transactions').get();
     final transData = snapshot.docs.map((e) => transModel.fromSnapshot(e)).toList();
     return transData;
   }

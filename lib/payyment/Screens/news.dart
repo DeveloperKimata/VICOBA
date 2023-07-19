@@ -6,13 +6,13 @@ import 'package:vicoba_app_final_year_project/screen/controller/loan_controller.
 
 class Loans extends StatelessWidget {
   Loans({Key? key}) : super(key: key);
-  TextEditingController _loanRequest = TextEditingController(
+  TextEditingController loanRequest = TextEditingController(
       text: 'Loan Request');
-  TextEditingController _controllerID = TextEditingController();
+  TextEditingController controllerID = TextEditingController();
   FocusNode id = FocusNode();
-  TextEditingController _controllerAmount = TextEditingController();
+  TextEditingController controllerAmount = TextEditingController();
   FocusNode Amount = FocusNode();
-  TextEditingController _controllerPost = TextEditingController();
+  TextEditingController controllerStatement = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,7 @@ class Loans extends StatelessWidget {
                 ),
                 SizedBox(height: 50),
                 TextFormField(
-                  controller: _loanRequest,
+                  controller: loanRequest,
                   decoration: InputDecoration(
                     labelText: 'requestStatement',
                     labelStyle: TextStyle(
@@ -70,7 +70,7 @@ class Loans extends StatelessWidget {
                 SizedBox(height: 10),
                 TextFormField(
                   keyboardType: TextInputType.number,
-                  controller: _controllerID,
+                  controller: controllerID,
                   decoration: InputDecoration(
                     labelText: 'id',
                     labelStyle: TextStyle(
@@ -92,7 +92,7 @@ class Loans extends StatelessWidget {
                 SizedBox(height: 10),
                 TextFormField(
                   keyboardType: TextInputType.number,
-                  controller: _controllerAmount,
+                  controller: controllerAmount,
                   decoration: InputDecoration(
                     labelText: 'Amount',
                     labelStyle: TextStyle(
@@ -112,7 +112,7 @@ class Loans extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
-                  controller: _controllerPost,
+                  controller: controllerStatement,
                   decoration: InputDecoration(
                     labelText: 'Statement',
                     labelStyle: TextStyle(
@@ -134,14 +134,15 @@ class Loans extends StatelessWidget {
                 // showLoader?CircularProgressIndicator():
                 ElevatedButton(onPressed: () {
                   final loan = loanModel(
-                    id: _controllerID.text.trim(),
-                    Amount: _controllerAmount.text.trim(),
-                    statement: _controllerPost.text.trim(),
+                      loanRequest:loanRequest.text.trim(),
+                    id: controllerID.text.trim(),
+                    controllerAmount: controllerAmount.text.trim(),
+                    controllerStatement: controllerStatement.text.trim(),
                   );
                   loanController.instance.createLoan(loan);
-                  _controllerID.clear();
-                  _controllerAmount.clear();
-                  _controllerPost.clear();
+                  controllerID.clear();
+                  controllerAmount.clear();
+                  controllerStatement.clear();
                 },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black87,

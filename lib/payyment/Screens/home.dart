@@ -1,13 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:vicoba_app_final_year_project/models/userModel.dart';
+import 'package:vicoba_app_final_year_project/payyment/Screens/loanRequest.dart';
 import 'package:vicoba_app_final_year_project/payyment/Screens/report.dart';
 import 'package:vicoba_app_final_year_project/payyment/data/model/add_date.dart';
 import 'package:vicoba_app_final_year_project/payyment/data/utlity.dart';
-import 'package:vicoba_app_final_year_project/screen/controller/profileController.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -55,7 +53,7 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                             Text(
-                              'See ll',
+                              'See all',
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 15,
@@ -94,10 +92,10 @@ class _HomeState extends State<Home> {
     return ListTile(
       leading: ClipRRect(
         borderRadius: BorderRadius.circular(5),
-        child: Image.asset('images/${history.name}.png', height: 40),
+        child: Image.asset('images/${history.Select_payment_type}.png', height: 40),
       ),
       title: Text(
-        history.name,
+        history.Select_payment_type,
         style: TextStyle(
           fontSize: 17,
           fontWeight: FontWeight.w600,
@@ -110,18 +108,17 @@ class _HomeState extends State<Home> {
         ),
       ),
       trailing: Text(
-        history.amount,
+        history.Amount,
         style: TextStyle(
           fontWeight: FontWeight.w600,
           fontSize: 19,
-          color: history.IN == 'Income' ? Colors.green : Colors.red,
+          color: history.Select_transaction_type == 'Deposit' ? Colors.green : Colors.red,
         ),
       ),
     );
   }
 
   Widget _head() {
-    final controller = Get.put(profileController());
     return Stack(
       children: [
         Column(
@@ -131,10 +128,10 @@ class _HomeState extends State<Home> {
               height: 240,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors:[
-                    Colors.black,
-                    Colors.orange,
-                  ],
+                colors:[
+                  Colors.black,
+                  Colors.orange,
+                ],
                 ),
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(20),
@@ -159,62 +156,26 @@ class _HomeState extends State<Home> {
                     padding: const EdgeInsets.only(top: 35, left: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      /// step 4 - wrap this widget with futureBuilder
                       children: [
                         Text(
-                          'Welcome',
+                          'Welcome in',
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w500,
                             fontSize: 16,
+                            color: Color.fromARGB(255, 224, 223, 223),
+                          ),
+                        ),
+                        Text(
+                          'Village Community Banking',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20,
                             color: Colors.white,
                           ),
                         ),
-                        Text('DeveloperKimata',style: TextStyle(fontSize: 20,
-                            fontWeight: FontWeight.bold,color: Colors.white),),
                       ],
                     ),
                   )
-                        // FutureBuilder(
-                        //   future: controller.getUserData(),
-                        //   builder: (context, snapshot){
-                        //     if(snapshot.connectionState == ConnectionState.done){
-                        //       if(snapshot.hasData){
-                        //         userModel user = snapshot.data as userModel;
-                        //
-                        //
-                        //         // controller
-                        //         final userName =  TextEditingController(text: user.userName);
-                        //
-                        //
-                        //         return Padding(
-                        //           padding: const EdgeInsets.only(top: 35, left: 10),
-                        //           child: Column(
-                        //             crossAxisAlignment: CrossAxisAlignment.start,
-                        //             /// step 4 - wrap this widget with futureBuilder
-                        //             children: [
-                        //               Text(
-                        //                 'Welcome',
-                        //                 style: TextStyle(
-                        //                   fontWeight: FontWeight.bold,
-                        //                   fontSize: 16,
-                        //                   color: Colors.white,
-                        //                 ),
-                        //               ),
-                        //               Text(user.userName!,style: TextStyle(fontSize: 20,
-                        //                   fontWeight: FontWeight.bold,color: Colors.white),),
-                        //             ],
-                        //           ),
-                        //         );
-                        //       }else if(snapshot.hasError){
-                        //         return Center(child: Text(snapshot.error.toString()),);
-                        //       }else{
-                        //         return Center(child: Text('Something went wrong'),);
-                        //       }
-                        //     }else{
-                        //       return const Center(child: CircularProgressIndicator());
-                        //     }
-                        //   },
-                        // ),
                 ],
               ),
             ),
@@ -259,15 +220,16 @@ class _HomeState extends State<Home> {
                           color: Colors.black,
                         ),
                       ),
-                      const Icon(Icons.more_horiz,color:Colors.white,),
-
-                      // IconButton(
-                      //   onPressed: (){
-                      //     //Get.to(() => Report.new(Map()));
-                      //   },
-                      //   icon: const Icon(Icons.more_horiz),
+                      // Icon(
+                      //   Icons.more_horiz,
                       //   color: Colors.white,
                       // ),
+                      GestureDetector(
+                          onTap: (){
+                            Get.to(() => loanRequest());
+                          },
+                           child: Icon(Icons.more_horiz,color:Colors.white,),
+                      )
                     ],
                   ),
                 ),
@@ -306,7 +268,7 @@ class _HomeState extends State<Home> {
                           ),
                           SizedBox(width: 7),
                           Text(
-                            'Income',
+                            'Deposit',
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 16,
@@ -328,7 +290,7 @@ class _HomeState extends State<Home> {
                           ),
                           SizedBox(width: 7),
                           Text(
-                            'Expenses',
+                            'Withdraw',
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 16,
